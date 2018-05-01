@@ -14,6 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(resp => resp.json())
     .then(json => {json.forEach(n=>notes.push(n)) ;createTitles(json)})
 
+  // fetch('http://localhost:3000/api/v1/notes/'){
+  // method: 'POST',
+  // body: JSON.stringify(data),
+  // headers:
+  //   'Content-Type': 'application/json',
+  //   .then(resp => resp.json())
+  //   .then(json => {json.forEach(n=>notes.push(n)) ;createTitles(json)})
+
   function createTitles(json){
     json.forEach(note => {
       const titleDiv = document.createElement('div')
@@ -45,10 +53,41 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
+  const noteForm = document.getElementById("create-new-note")
+
+
+
+    noteForm.addEventListener('click', function(e){
+      console.log("clicked")
+      createForm()
+      e.stopPropagation()
+    })
 
 
 
 
+    function renderNewForm(){
+      return `<form id=newNote>
+      Username:<br>
+      <input type="text" name="username" placeholder="Type Here">
+      <br>
+      Title:<br>
+      <input type="text" name="title" placeholder="Type Here">
+      <br>
+      Note: <br>
+      <input type="text" name="note" placeholder="Type Here">
+      <br>
+      <input type="submit" value="Submit">
+      </form>`
+    }
 
+    function createForm(){
+      //
+      const formDiv = document.createElement('div')
+      formDiv.innerHTML = renderNewForm()
+      notesContainer.append(formDiv)
+      debugger
+      console.log(formDiv);
+    }
 
 })
