@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const titleContainer = document.getElementById("title-container")
   const notesContainer = document.getElementById("notes-container")
+
   var notes = []
 
   //find ID in notes
@@ -14,17 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(resp => resp.json())
     .then(json => {json.forEach(n=>notes.push(n)) ;createTitles(json)})
 
-  // fetch('http://localhost:3000/api/v1/notes/'){
-  // method: 'POST',
-  // body: JSON.stringify(data),
-  // headers:
-  //   'Content-Type': 'application/json',
-  //   .then(resp => resp.json())
-  //   .then(json => {json.forEach(n=>notes.push(n)) ;createTitles(json)})
-
   function createTitles(json){
     json.forEach(note => {
-      const titleDiv = document.createElement('div')
+      let titleDiv = document.createElement('div')
       titleDiv.innerHTML = renderTitle(note)
       titleContainer.append(titleDiv)
     })
@@ -47,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function createNotes(note){
-    const noteDiv = document.createElement('div')
+    let noteDiv = document.createElement('div')
     noteDiv.innerHTML = renderNote(note)
     notesContainer.append(noteDiv)
   }
@@ -63,26 +56,49 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation()
     })
 
-
-
-
     function renderNewForm(){
-      return `<form id=newNote>
+      return `<form id=new-note>
       Title:<br>
-      <input type="text" name="title" placeholder="Type Here">
+      <input id="titlefield" type="text" name="title" placeholder="Type Here">
       <br>
-      Note: <br>
-      <input type="text" name="note" placeholder="Type Here">
+      Note Body: <br>
+      <input id="bodyfield" type="text" name="note" placeholder="Type Here">
       <br>
       <input type="submit" value="Submit">
       </form>`
     }
 
     function createForm(){
-      const formDiv = document.createElement('div')
+      let formDiv = document.createElement('div')
       formDiv.innerHTML = renderNewForm()
       notesContainer.append(formDiv)
-      console.log(formDiv);
-    }
+      let titleField = document.getElementById('titlefield')
+      let bodyField = document.getElementById('bodyfield')
+      formDiv.addEventListener("submit", (e) => {
+        e.preventDefault()
+        let data = {title: `${titleField.value}`, body:`${bodyField.value}`, user_id: 1}
+        fetch('http://localhost:3000/api/v1/notes', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+          body: JSON.stringify(data)})
+            .then(resp => resp.json())
+            .then(json => {
+              let titleDiv = document.createElement('div')
+              titleDiv.innerHTML = renderTitle(json)
+              debugger
+              titleContainer.append(titleDiv)
+            })
+        })
+      }
+
+    // fetch('http://localhost:3000/api/v1/notes/' ){
+    // method: 'POST',
+    // body: JSON.stringify(),
+    // headers: {'Content-Type': 'application/json'}
+    //   .then(resp => resp.json())
+    //   .then(json => console.log(resp))}
+
 
 })
