@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     noteForm.addEventListener('click', function(e){
-      console.log("clicked")
+      notesContainer.innerHTML = ""
       createForm()
       e.stopPropagation()
     })
@@ -68,9 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderNewForm(){
       return `<form id=newNote>
-      Username:<br>
-      <input type="text" name="username" placeholder="Type Here">
-      <br>
       Title:<br>
       <input type="text" name="title" placeholder="Type Here">
       <br>
@@ -82,11 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createForm(){
-      //
       const formDiv = document.createElement('div')
       formDiv.innerHTML = renderNewForm()
       notesContainer.append(formDiv)
-      debugger
       console.log(formDiv);
     }
 
